@@ -1,0 +1,86 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getBlogListRes, getBlogPostRes, getPageRes } from "../../helper/utils";
+import type { Page, Post } from "../../type/page";
+import type { EntryData } from "../../type/layout";
+import RenderComponents from "../../components/render-components";
+import moment from "moment";
+import ArchiveRelative from "../../components/archive-relative";
+let pageEntry: Page | undefined = undefined;
+
+export async function getStaticPaths() {
+  let entryList:
+    | { params: { path: string }; props: { post: Post } }[]
+    | undefined = undefined;
+  try {
+    entryList = (await getBlogListRes())?.map((entry) => {
+      return {
+        params: {
+          path: entry.url.split("/blog/")[1],
+        },
+        props: {
+          post: entry,
+        },
+      };
+    });
+  } catch (error) {
+    console.error(error);
+    Astro.redirect("404");
+  }
+
+  return entryList;
+}
+const { post } = Astro.props;
+try {
+  pageEntry = await getPageRes("/blog");
+} catch (error) {
+  console.error(error);
+  Astro.redirect("404");
+}
+---
+
+<Layout title={post.title}>
+  <main>
+    {
+      pageEntry && (
+        <RenderComponents
+          pageComponents={pageEntry.page_components}
+          entryUid={pageEntry.uid}
+          contentTypeUid="page"
+          locale={pageEntry.locale}
+        />
+      )
+    }
+    <div class="blog-container">
+      <article class="blog-detail">
+        {post?.title && <h2>{post.title}</h2>}
+        {
+          post && post.date && (
+            <p>
+              {moment(post.date).format("ddd, MMM D YYYY")},{" "}
+              <strong>{post.author[0].title}</strong>
+            </p>
+          )
+        }
+        {post && post.body && <div set:html={post.body} />}
+      </article>
+      <div class="blog-column-right">
+        <div class="related-post">
+          {
+            pageEntry && pageEntry?.page_components[2].widget && (
+              <h2>{pageEntry?.page_components[2].widget.title_h2}</h2>
+            )
+          }
+          {
+            post && post.related_post && (
+              <ArchiveRelative
+                {...post.$?.related_post}
+                blogs={post.related_post}
+              />
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>

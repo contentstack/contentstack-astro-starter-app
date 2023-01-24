@@ -1,0 +1,28 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getPageRes } from "../helper/utils";
+import type { Page } from "../type/page";
+import RenderComponents from "../components/render-components";
+let pageEntry: Page | undefined = undefined;
+try {
+  pageEntry = await getPageRes("/");
+} catch (error) {
+  console.error(error);
+  Astro.redirect("404");
+}
+---
+
+<Layout title="Home">
+  <main>
+    {
+      pageEntry && (
+        <RenderComponents
+          pageComponents={pageEntry.page_components}
+          entryUid={pageEntry.uid}
+          contentTypeUid="page"
+          locale={pageEntry.locale}
+        />
+      )
+    }
+  </main>
+</Layout>

@@ -1,0 +1,47 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getAllEntries } from "../helper/utils";
+import type { Page } from "../type/page";
+import RenderComponents from "../components/render-components";
+
+export async function getStaticPaths() {
+  let entryList:
+    | { params: { page: string }; props: { page: Page } }[]
+    | undefined = [];
+  try {
+    for (let entry of await getAllEntries()) {
+      if (entry.url !== "/" && entry.url !== "/blog") {
+        entryList.push({
+          params: {
+            page: entry.url.split("/")[1],
+          },
+          props: {
+            page: entry,
+          },
+        });
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    Astro.redirect("404");
+  }
+  return entryList;
+}
+
+const {page} = Astro.props;
+---
+
+<Layout title={page.title}>
+  <main>
+    {
+      page && (
+        <RenderComponents
+          pageComponents={page.page_components}
+          entryUid={page.uid}
+          contentTypeUid="page"
+          locale={page.locale}
+        />
+      )
+    }
+  </main>
+</Layout>
