@@ -1,25 +1,14 @@
-import type { Action } from "../type/actions";
+import type { Key } from "react";
+import type { Card } from "../type/components";
 
-type AdditionalParam = {
-  title_h3: string;
-  description: string;
+type Props = {
+  cards: Card[];
 };
 
-type Card = {
-  title_h3: string;
-  description: string;
-  call_to_action: Action;
-  $: AdditionalParam;
-};
-
-type CardProps = {
-  cards: [Card];
-};
-
-export default function CardSection({ cards }: CardProps) {
+export default function CardSection({ cards }: Props) {
   return (
     <div className="demo-section">
-      {cards?.map((card, index) => (
+      {cards?.map((card: Card, index: Key) => (
         <div className="cards" key={index}>
           {card.title_h3 && (
             <h3 {...(card.$?.title_h3 as {})}>{card.title_h3}</h3>

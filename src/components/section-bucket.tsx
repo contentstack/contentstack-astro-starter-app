@@ -1,32 +1,7 @@
-// import parse from 'html-react-parser';
-import type { Image, Action } from "../type/actions";
+import parse from 'html-react-parser';
+import type { SectionWithBucket } from "../type/components";
 
-type AdditionalParam = {
-  title: string;
-  title_h2: string;
-  title_h3: string;
-  description: string;
-  html_code: string;
-  designation: string;
-  name: string;
-}
-
-type Buckets = {
-  title_h3: string;
-  description: string;
-  call_to_action: Action;
-  icon: Image;
-  $: AdditionalParam;
-}
-
-export type BucketProps = {
-  title_h2: string;
-  description: string;
-  buckets: [Buckets];
-  $: AdditionalParam;
-}
-
-export default function SectionBucket({ section }: {section: BucketProps}) {
+export default function SectionBucket({ section }: {section: SectionWithBucket}) {
   return (
     <div className='member-main-section'>
       <div className='member-head'>
@@ -55,7 +30,7 @@ export default function SectionBucket({ section }: {section: BucketProps}) {
             )}
             {typeof bucket.description === 'string' && (
               <div {...bucket.$?.description as {}}>{
-                // parse(bucket.description)
+                parse(bucket.description)
                 }</div>
             )}
             {bucket.call_to_action.title ? (

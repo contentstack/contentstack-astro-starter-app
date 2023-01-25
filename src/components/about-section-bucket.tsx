@@ -1,60 +1,24 @@
-import parse from 'html-react-parser';
-import type { Action, Image } from "../type/actions";
-
-type AdditionalParam = {
-  title_h2?: string;
-  title_h3?: string;
-  description?: string;
-};
-
-type Bucket = {
-  title_h3: string;
-  description: string;
-  icon: Image;
-  $: AdditionalParam;
-  url: string;
-};
-
-type BucketsList = {
-  title_h3: string;
-  description: string;
-  url: string;
-  call_to_action: Action;
-  icon: Image;
-  $: AdditionalParam;
-};
-
-type BucketProps = {
-  title_h2: string;
-  buckets: [BucketsList];
-  $: AdditionalParam;
-};
+import parse from "html-react-parser";
+import type { BucketList, SectionWithBucket } from "../type/components";
 
 export default function AboutSectionBucket({
   sectionWithBuckets,
 }: {
-  sectionWithBuckets: BucketProps;
+  sectionWithBuckets: SectionWithBucket;
 }) {
-  function bucketContent(bucket: Bucket, index: number) { 
+  function bucketContent(bucket: BucketList, index: number) {
     return (
       <div className="mission-content-section" key={index}>
         {bucket.icon && (
-          <img
-            className="mission-icon"
-            src={bucket.icon.url}
-            alt="art work"
-          />
+          <img className="mission-icon" src={bucket.icon.url} alt="art work" />
         )}
-
         <div className="mission-section-content">
           {bucket.title_h3 && (
-            <h3>{bucket.title_h3}</h3>
+            <h3 {...(bucket.$?.title_h3 as {})}>{bucket.title_h3}</h3>
           )}
           {typeof bucket.description === "string" && (
-            <div>
-              {
-                parse(bucket.description)
-              }
+            <div {...(bucket.$?.description as {})}>
+              {parse(bucket.description)}
             </div>
           )}
         </div>
@@ -66,7 +30,7 @@ export default function AboutSectionBucket({
     <div className="member-main-section">
       <div className="member-head">
         {sectionWithBuckets.title_h2 && (
-          <h2>
+          <h2 {...(sectionWithBuckets.$?.title_h2 as {})}>
             {sectionWithBuckets.title_h2}
           </h2>
         )}

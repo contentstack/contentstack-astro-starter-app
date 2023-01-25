@@ -30,12 +30,12 @@ export type Post = {
   title: string;
   date: string;
   author: [Author];
-  $: AdditionalParam;
+  $?: AdditionalParam;
 }
 
 type Author = {
   title: string;
-  $: AdditionalParam;
+  $?: AdditionalParam;
 }
 
 type PageProps = {
@@ -53,7 +53,7 @@ type Blog = {
   url: string;
   body: string;
   title: string;
-  $: AdditionalParam;
+  $?: AdditionalParam;
 }
 
 export type Props = {
@@ -106,5 +106,5 @@ export type BlogPosts = {
   seo: Seo;
   url: string;
   _owner: string;
-  $: AdditionalParam;
+  $?: AdditionalParam;
 }

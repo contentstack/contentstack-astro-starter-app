@@ -1,23 +1,4 @@
-import type { Image, Action } from "../type/actions";
-
-type AdditionalParam = {
-  title: string;
-  title_h2: string;
-  title_h3: string;
-  description: string;
-  html_code: string;
-  designation: string;
-  name: string;
-};
-
-type SectionProps = {
-  title_h2: String;
-  description: string;
-  call_to_action: Action;
-  image: Image;
-  image_alignment: string;
-  $: AdditionalParam;
-};
+import type { SectionProps } from "../type/components";
 
 export default function Section({ section }: { section: SectionProps }) {
   function contentSection(key: any) {
@@ -33,7 +14,7 @@ export default function Section({ section }: { section: SectionProps }) {
           <a
             href={section.call_to_action.href}
             className="btn secondary-btn"
-            {...section.call_to_action.$?.title}
+            {...section.call_to_action.$?.title as {}}
           >
             {section.call_to_action.title}
           </a>

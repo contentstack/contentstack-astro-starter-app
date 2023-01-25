@@ -1,24 +1,7 @@
-// import parse from 'html-react-parser';
+import parse from 'html-react-parser';
+import type { SectionWithHtmlProps } from "../type/components";
 
-type AdditionalParam = {
-  title: string;
-  title_h2: string;
-  title_h3: string;
-  description: string;
-  html_code: string;
-  designation: string;
-  name: string;
-}
-
-type ObjectProps = {
-  html_code_alignment: string;
-  title: string;
-  description: string;
-  html_code: string;
-  $: AdditionalParam;
-}
-
-export default function SectionWithHtmlCode({ embedCode }: {embedCode : ObjectProps}) {
+export default function SectionWithHtmlCode({ embedCode }: {embedCode : SectionWithHtmlProps}) {
   if (embedCode.html_code_alignment === 'Left') {
     return (
       <div className='contact-page-section max-width'>
@@ -28,14 +11,14 @@ export default function SectionWithHtmlCode({ embedCode }: {embedCode : ObjectPr
           )}
           {typeof embedCode.description === 'string' && (
             <div {...embedCode.$?.description as {}}>
-              {/* {parse(embedCode.description)} */}
+              {parse(embedCode.description)}
             </div>
           )}
         </div>
         <div className='contact-page-form'>
           {typeof embedCode.html_code === 'string' && (
             <div {...embedCode.$?.html_code as {}}>
-              {/* {parse(embedCode.html_code)} */}
+              {parse(embedCode.html_code)}
               </div>
           )}
         </div>
@@ -47,7 +30,7 @@ export default function SectionWithHtmlCode({ embedCode }: {embedCode : ObjectPr
       <div className='maps-details'>
         {typeof embedCode.html_code === 'string' && (
           <div {...embedCode.$?.html_code as {}}>
-            {/* {parse(embedCode.html_code)} */}
+            {parse(embedCode.html_code)}
             </div>
         )}
       </div>
@@ -55,7 +38,7 @@ export default function SectionWithHtmlCode({ embedCode }: {embedCode : ObjectPr
         {embedCode.title ? <h2>{embedCode.title}</h2> : ''}
         {typeof embedCode.description === 'string' && (
           <div {...embedCode.$?.description as {}}>
-            {/* {parse(embedCode.description)} */}
+            {parse(embedCode.description)}
           </div>
         )}
       </div>

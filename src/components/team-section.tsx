@@ -1,28 +1,4 @@
-import type { Image } from "../type/actions";
-
-type AdditionalParam = {
-  title: string;
-  title_h2: string;
-  title_h3: string;
-  description: string;
-  html_code: string;
-  designation: string;
-  name: string;
-}
-
-type Employee = {
-  image: Image;
-  name: string;
-  designation: string;
-  $: AdditionalParam;
-}
-
-type TeamProps = {
-  title_h2: string;
-  description: string;
-  $: AdditionalParam;
-  employees: [Employee];
-}
+import type { TeamProps } from "../type/components";
 
 export default function TeamSection({ ourTeam }: {ourTeam : TeamProps}) {
   return (

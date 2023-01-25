@@ -71,7 +71,7 @@ export default function Footer({footer}:Props) {
                   <li
                     className="footer-nav-li"
                     key={menu.title}
-                    // {...menu.$?.title}
+                    {...menu.$?.title as {}}
                   >
                     <a href={menu.href}>{menu.title}</a>
                   </li>

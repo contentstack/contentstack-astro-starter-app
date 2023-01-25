@@ -1,68 +1,66 @@
 import type { JsonRTE } from "@contentstack/utils";
 import type { Action, Image } from "./actions";
+import type { Author } from "./layout";
 
 type Employee = {
   image: Image;
   name: string;
   designation: string;
-  $: Employee;
+  $?: Employee;
 }
 
-type BucketList = [
-  BucketArray:{
+export type BucketList = {
+  title_h3: string;
+  description: string;
+  url: string;
+  call_to_action: Action;
+  icon: Image;
+  $?: {
     title_h3: string;
     description: string;
     url: string;
     call_to_action: Action;
     icon: Image;
-    $: {
-      title_h3: string;
-      description: string;
-      url: string;
-      call_to_action: Action;
-      icon: Image;
-    };
   }
-]
+}
 
-type Card = [
-  cardArray: {
+export type Card = {
+  title_h3: string;
+  description: string;
+  call_to_action: Action;
+  $?: {
     title_h3: string;
     description: string;
     call_to_action: Action;
-    $: {
-      title_h3: string;
-      description: string;
-      call_to_action: Action;
-    };
-    }
-]
+  };
+}
 
 type Article = {
   href: string;
   title: string;
-  $: Article;
+  $?: Article;
 }
 
-type FeaturedBlog = [
-  BlogArray: {
+export type FeaturedBlog = {
+  title: string;
+  featured_image: Image;
+  body: string;
+  date: Date;
+  url: string;
+  author: Author[];
+  $?: {
     title: string;
     featured_image: Image;
     body: string;
     url: string;
-    $: {
-      title: string;
-      featured_image: Image;
-      body: string;
-      url: string;
-    };
-  }
-]
+    date: Date;
+  };
+}
 
 type Widget = {
   title_h2: string;
   type?: string;
-  $: Widget;
+  $?: Widget;
 }
 
 export type Component = {
@@ -71,62 +69,62 @@ export type Component = {
   section_with_buckets?: SectionWithBucket;
   from_blog?: FeaturedBlogData;
   section_with_cards?: Cards;
-  section_with_html_code?: AdditionalParamProps;
+  section_with_html_code?: SectionWithHtmlProps;
   our_team?: TeamProps;
   widget?: Widget;
 }
 
 export type SectionWithBucket = {
-    bucket_tabular: boolean
-    title_h2: string;
-    buckets: BucketList;
-    description: string;
-    // $: AdditionalParam;
-  }
+  bucket_tabular: boolean
+  title_h2: string;
+  buckets: BucketList[];
+  description: string;
+  $?: SectionWithBucket;
+}
 
 export type Cards = {
-    cards: Card;
-  }
-  
+  cards: Card[];
+}
+
 export type Banner = {
-    banner_title:string;
-    banner_description: string;
-    bg_color: string;
-    call_to_action: Action;
-    banner_image: Image;
-    text_color: string;
-    $: Banner;
-  }
-  
-export type AdditionalParamProps = {
-    html_code_alignment: string;
-    title: string;
-    $: AdditionalParamProps;
-    description: string;
-    html_code: string;
-  }
-  
+  banner_title: string;
+  banner_description: string;
+  bg_color: string;
+  call_to_action: Action;
+  banner_image: Image;
+  text_color: string;
+  $?: Banner;
+}
+
+export type SectionWithHtmlProps = {
+  html_code_alignment: string;
+  title: string;
+  $?: SectionWithHtmlProps;
+  description: string;
+  html_code: string;
+}
+
 export type SectionProps = {
-    title_h2: String;
-    description: string;
-    call_to_action: Action;
-    image: Image;
-    image_alignment: string;
-    $: SectionProps;
-  } 
-  
+  title_h2: String;
+  description: string;
+  call_to_action: Action;
+  image: Image;
+  image_alignment: string;
+  $?: SectionProps;
+}
+
 export type TeamProps = {
-    title_h2: string;
-    description: string;
-    $: TeamProps;
-    employees: [Employee];
-  }
-  
+  title_h2: string;
+  description: string;
+  $?: TeamProps;
+  employees: [Employee];
+}
+
 export type FeaturedBlogData = {
-    title_h2: string;
-    view_articles: Article;
-    featured_blogs: FeaturedBlog;
-    $: FeaturedBlogData;
+  title_h2: string;
+  view_articles: Article;
+  featured_blogs: FeaturedBlog[];
+  $?: FeaturedBlogData;
 }
 
 export type RenderProps = {
@@ -134,7 +132,7 @@ export type RenderProps = {
   contentTypeUid: string;
   entryUid: string;
   locale: string;
-  pageComponents:Component[];
+  pageComponents: Component[];
 }
 
 // export type HeaderProps ={

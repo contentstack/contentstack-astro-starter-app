@@ -4,7 +4,7 @@ import type { FooterProps, HeaderProps } from "../type/layout";
 import type { Page, Post } from "../type/page";
 
 
-const liveEdit = process.env.CONTENTSTACK_LIVE_EDIT_TAGS === 'true';
+const liveEdit = import.meta.env.CONTENTSTACK_LIVE_EDIT_TAGS === 'true';
 
 export const getHeaderRes = async ():Promise<HeaderProps> => {
   const response = await Stack.getEntry({

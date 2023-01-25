@@ -1,27 +1,10 @@
-import type { Image, Action } from "../type/actions";
+import type { Banner } from "../type/components";
 
-type AdditionalParam = {
-  banner_title: string;
-  banner_description: string;
-}
-
-type Banner = {
-  bg_color: string;
-  text_color: string;
-  banner_title: string;
-  banner_description: string;
-  call_to_action: Action;
-  banner_image: Image;
-  $: Banner;
-}
-
-type BannerProps = {
+type Props = {
   banner: Banner;
-}
+};
 
-export default function HeroBanner(props: BannerProps) {
-  const banner = props.banner;
-
+export default function HeroBanner({ banner }: Props) {
   return (
     <div
       className="hero-banner"
@@ -57,7 +40,7 @@ export default function HeroBanner(props: BannerProps) {
           <a
             href={banner?.call_to_action.href}
             className="btn tertiary-btn"
-            // {...banner.call_to_action.$?.title}
+            {...(banner.call_to_action.$?.title as {})}
           >
             {banner?.call_to_action.title}
           </a>
