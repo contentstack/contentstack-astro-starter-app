@@ -1,22 +1,22 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getBlogListRes, getBlogPostRes, getPageRes } from "../../helper/utils";
-import type { Page, Post } from "../../type/page";
-import type { EntryData } from "../../type/layout";
+import { getBlogListRes, getPageRes } from "../../scripts/utils";
+import type { Page } from "../../type/page";
 import RenderComponents from "../../components/render-components";
 import moment from "moment";
 import ArchiveRelative from "../../components/archive-relative";
+import type { FeaturedBlog } from "../../type/components";
 let pageEntry: Page | undefined = undefined;
 
 export async function getStaticPaths() {
   let entryList:
-    | { params: { path: string }; props: { post: Post } }[]
+    | { params: { path: string }; props: { post: FeaturedBlog } }[]
     | undefined = undefined;
   try {
     entryList = (await getBlogListRes())?.map((entry) => {
       return {
         params: {
-          path: entry.url.split("/blog/")[1],
+          path: entry.url.replaceAll("/blog/",""),
         },
         props: {
           post: entry,
@@ -25,7 +25,6 @@ export async function getStaticPaths() {
     });
   } catch (error) {
     console.error(error);
-    Astro.redirect("404");
   }
 
   return entryList;
@@ -35,11 +34,10 @@ try {
   pageEntry = await getPageRes("/blog");
 } catch (error) {
   console.error(error);
-  Astro.redirect("404");
 }
 ---
 
-<Layout title={post.title}>
+<Layout title={post.title} previewObject={{page:pageEntry, blogPost:post}}>
   <main>
     {
       pageEntry && (
@@ -48,6 +46,7 @@ try {
           entryUid={pageEntry.uid}
           contentTypeUid="page"
           locale={pageEntry.locale}
+          client:idle
         />
       )
     }
@@ -76,6 +75,7 @@ try {
               <ArchiveRelative
                 {...post.$?.related_post}
                 blogs={post.related_post}
+                client:idle
               />
             )
           }

@@ -1,8 +1,9 @@
 import type { Post } from "../type/page";
 import parse from "html-react-parser";
+import type { FeaturedBlog } from "../type/components";
 
 type Props = {
-  blogs: Post[];
+  blogs: FeaturedBlog[];
 };
 export default function ArchiveRelative({ blogs }: Props) {
   return (

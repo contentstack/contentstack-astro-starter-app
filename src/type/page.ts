@@ -73,6 +73,7 @@ export type Page ={
   url: string;
   seo: Seo;
   title: string;
+  $:Page
 }
 
 export type Context = {

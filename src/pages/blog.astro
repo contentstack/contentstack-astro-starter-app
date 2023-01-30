@@ -1,30 +1,31 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getPageRes, getBlogListRes } from "../helper/utils";
-import type { Page, Post } from "../type/page";
+import { getPageRes, getBlogListRes } from "../scripts/utils";
+import type { Page } from "../type/page";
+
+import type { FeaturedBlog } from "../type/components";
 import RenderComponents from "../components/render-components";
 import BlogList from "../components/blog-list";
 import ArchiveRelative from "../components/archive-relative";
 let pageEntry: Page | undefined = undefined;
-let blogList: Post[] | undefined = undefined;
+let blogList: FeaturedBlog[] | undefined = undefined;
 try {
   pageEntry = await getPageRes("/blog");
   blogList = await getBlogListRes();
 
 } catch (error) {
   console.error(error);
-  Astro.redirect("404");
 }
 
-const archivePost:Post[] =[]
-const blogs:Post[] = []
+const archivePost:FeaturedBlog[] =[]
+const blogs:FeaturedBlog[] = []
  blogList?.forEach(post => {
   post.is_archived? archivePost.push(post): blogs.push(post);
  })
 
 ---
 
-<Layout title="Blogs">
+<Layout title="Blogs" previewObject={{page:pageEntry, blogList}}>
   <main>
     <>
     {pageEntry?.page_components && (
@@ -50,7 +51,7 @@ const blogs:Post[] = []
           <h2>{pageEntry.page_components[1].widget.title_h2}</h2>
         )}
         {archivePost &&(
-          <ArchiveRelative blogs={archivePost} />
+          <ArchiveRelative blogs={archivePost}/>
         )}
       </div>
     </div>

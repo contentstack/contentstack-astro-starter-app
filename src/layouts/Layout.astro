@@ -1,63 +1,98 @@
 ---
 export interface Props {
-	title: string;
+  title: string;
+  previewObject: {
+    page?: Page;
+    blogList?: FeaturedBlog[];
+    blogPost?: FeaturedBlog;
+  };
 }
 import Header from "../components/header";
 import Footer from "../components/footer";
-import ".././style/style.css"
-import { getFooterRes, getHeaderRes } from "../helper/utils";
+import ".././style/style.css";
+import { getFooterRes, getHeaderRes, getAllEntries } from "../scripts/utils";
 import type { FooterProps, HeaderProps } from "../type/layout";
 import "@contentstack/live-preview-utils/dist/main.css";
+import DevTools from "../components/devtools";
+import type { FeaturedBlog } from "../type/components";
+import type { Page } from "../type/page";
+export const prerender = true;
 
-const { title } = Astro.props;
-let header:HeaderProps | undefined=undefined, footer:FooterProps | undefined= undefined;
-try{
-	 header = await getHeaderRes();
-	 footer = await getFooterRes();
-
-}catch(e){
-	console.error(e)
-	Astro.redirect("404")
+const { title, previewObject } = Astro.props;
+let header: HeaderProps | undefined = undefined,
+  footer: FooterProps | undefined = undefined,
+  allEntries: Page[] | undefined = undefined;
+type jsonProps = {
+  header?: HeaderProps | {};
+  footer?: FooterProps | {};
+  page?: Page | {};
+  blogList?: FeaturedBlog[] | [];
+  blogPost?: FeaturedBlog | {};
+};
+let jsonPreivew: jsonProps = {};
+try {
+  header = await getHeaderRes();
+  footer = await getFooterRes();
+  allEntries = await getAllEntries();
+  jsonPreivew.header = header;
+  jsonPreivew.footer = footer;
+  previewObject.page && (jsonPreivew.page = previewObject.page);
+  previewObject.blogList && (jsonPreivew.blogList = previewObject.blogList);
+  previewObject.blogPost && (jsonPreivew.blogPost = previewObject.blogPost);
+} catch (e) {
+  console.error(e);
 }
+
+const pathname = new URL(Astro.request.url).pathname;
 ---
+
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<link rel='preconnect' href='https://fonts.gstatic.com' />
-		<link
-			href='https://fonts.googleapis.com/css?family=Inter&amp;display=swap'
-			rel='stylesheet'
-		/>
-		<link
-			rel='stylesheet'
-			href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css'
-			integrity='sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=='
-			crossorigin='anonymous'
-			referrerPolicy='no-referrer'
-		/>
-		<link
-			href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css'
-			rel='stylesheet'
-			integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC'
-			crossorigin='anonymous'
-		/>
-		<script
-			src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
-			integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM'
-			crossorigin='anonymous'
-			defer
-		/>
-		<link rel='manifest' href='/manifest.json' />
-		<link href='/favicon.ico' rel='icon' type='image/ico' sizes='16x16' />
-		<link rel='apple-touch-icon' href='/path/to/apple-touch-icon.png' />
-		<meta name='theme-color' content='#317EFB' />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		{
-			header &&<Header header={header}/>}
-		<slot />
-		{footer && <Footer footer={footer}/>}
-	</body>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Inter&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+      crossorigin="anonymous"
+      referrerPolicy="no-referrer"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <link rel="manifest" href="/manifest.json" />
+    <link href="/favicon.ico" rel="icon" type="image/ico" sizes="16x16" />
+    <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
+    <meta name="theme-color" content="#317EFB" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    {
+      header && allEntries && (
+        <Header
+          header={header}
+          allEntries={allEntries}
+          currentPath={pathname}
+					client:idle
+        />
+      )
+    }
+    <DevTools response={jsonPreivew} client:only />
+    <slot />
+    {footer && allEntries && <Footer footer={footer} allEntries={allEntries} client:idle/>}
+  </body>
 </html>

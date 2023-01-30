@@ -2,6 +2,7 @@ import Stack from '../contentstack-sdk';
 import { addEditableTags } from '@contentstack/utils';
 import type { FooterProps, HeaderProps } from "../type/layout";
 import type { Page, Post } from "../type/page";
+import type { FeaturedBlog } from "../type/components";
 
 
 const liveEdit = import.meta.env.CONTENTSTACK_LIVE_EDIT_TAGS === 'true';
@@ -62,7 +63,7 @@ export const getBlogListRes = async () => {
     contentTypeUid: 'blog_post',
     referenceFieldPath: ['author', 'related_post'],
     jsonRtePath: ['body'],
-  }) as [Post[]];
+  }) as [FeaturedBlog[]];
   liveEdit &&
     response[0].forEach((entry:any) => addEditableTags(entry, 'blog_post', true));
   return response[0];
