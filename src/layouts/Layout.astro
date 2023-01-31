@@ -7,21 +7,20 @@ export interface Props {
     blogPost?: FeaturedBlog;
   };
 }
-import Header from "../components/header";
-import Footer from "../components/footer";
-import ".././style/style.css";
-import { getFooterRes, getHeaderRes, getAllEntries } from "../scripts/utils";
-import type { FooterProps, HeaderProps } from "../type/layout";
-import "@contentstack/live-preview-utils/dist/main.css";
+import Header from "../components/header.astro";
+import Footer from "../components/footer.astro";
 import DevTools from "../components/devtools";
 import type { FeaturedBlog } from "../type/components";
 import type { Page } from "../type/page";
+import ".././style/style.css";
+import { getFooterRes, getHeaderRes } from "../scripts/utils";
+import type { FooterProps, HeaderProps } from "../type/layout";
 export const prerender = true;
 
 const { title, previewObject } = Astro.props;
 let header: HeaderProps | undefined = undefined,
-  footer: FooterProps | undefined = undefined,
-  allEntries: Page[] | undefined = undefined;
+  footer: FooterProps | undefined = undefined;
+
 type jsonProps = {
   header?: HeaderProps | {};
   footer?: FooterProps | {};
@@ -29,11 +28,11 @@ type jsonProps = {
   blogList?: FeaturedBlog[] | [];
   blogPost?: FeaturedBlog | {};
 };
+
 let jsonPreivew: jsonProps = {};
 try {
   header = await getHeaderRes();
   footer = await getFooterRes();
-  allEntries = await getAllEntries();
   jsonPreivew.header = header;
   jsonPreivew.footer = footer;
   previewObject.page && (jsonPreivew.page = previewObject.page);
@@ -76,23 +75,16 @@ const pathname = new URL(Astro.request.url).pathname;
     <link rel="manifest" href="/manifest.json" />
     <link href="/favicon.ico" rel="icon" type="image/ico" sizes="16x16" />
     <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
-    <meta name="theme-color" content="#317EFB" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1" />
+    <meta name="description" content="This website is a sample app for astro framework" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
   <body>
-    {
-      header && allEntries && (
-        <Header
-          header={header}
-          allEntries={allEntries}
-          currentPath={pathname}
-					client:idle
-        />
-      )
-    }
+    {header && <Header header={header} currentPath={pathname} />}
     <DevTools response={jsonPreivew} client:only />
     <slot />
-    {footer && allEntries && <Footer footer={footer} allEntries={allEntries} client:idle/>}
+    {footer && <Footer footer={footer} />}
   </body>
 </html>

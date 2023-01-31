@@ -4,9 +4,9 @@ import { getPageRes, getBlogListRes } from "../scripts/utils";
 import type { Page } from "../type/page";
 
 import type { FeaturedBlog } from "../type/components";
-import RenderComponents from "../components/render-components";
-import BlogList from "../components/blog-list";
-import ArchiveRelative from "../components/archive-relative";
+import RenderComponents from "../components/render-components.astro";
+import BlogList from "../components/blog-list.astro";
+import ArchiveRelative from "../components/archive-relative.astro";
 let pageEntry: Page | undefined = undefined;
 let blogList: FeaturedBlog[] | undefined = undefined;
 try {

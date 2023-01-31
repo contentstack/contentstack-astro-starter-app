@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { getAllEntries } from "../scripts/utils";
 import type { Page } from "../type/page";
-import RenderComponents from "../components/render-components";
+import RenderComponents from "../components/render-components.astro";
 
 export async function getStaticPaths() {
   let entryList:
@@ -40,7 +40,6 @@ const {page} = Astro.props;
           entryUid={page.uid}
           contentTypeUid="page"
           locale={page.locale}
-          client:idle
         />
       )
     }

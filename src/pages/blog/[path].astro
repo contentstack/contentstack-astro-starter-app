@@ -2,9 +2,9 @@
 import Layout from "../../layouts/Layout.astro";
 import { getBlogListRes, getPageRes } from "../../scripts/utils";
 import type { Page } from "../../type/page";
-import RenderComponents from "../../components/render-components";
+import RenderComponents from "../../components/render-components.astro";
 import moment from "moment";
-import ArchiveRelative from "../../components/archive-relative";
+import ArchiveRelative from "../../components/archive-relative.astro";
 import type { FeaturedBlog } from "../../type/components";
 let pageEntry: Page | undefined = undefined;
 
@@ -46,7 +46,7 @@ try {
           entryUid={pageEntry.uid}
           contentTypeUid="page"
           locale={pageEntry.locale}
-          client:idle
+          blogPost
         />
       )
     }
@@ -75,7 +75,6 @@ try {
               <ArchiveRelative
                 {...post.$?.related_post}
                 blogs={post.related_post}
-                client:idle
               />
             )
           }

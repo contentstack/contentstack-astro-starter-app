@@ -1,0 +1,27 @@
+---
+import type { Card } from "../type/components";
+
+type Props = {
+  cards: Card[];
+};
+
+const { cards } = Astro.props;
+---
+
+<div class="demo-section">
+  {
+    cards?.map((card: Card) => (
+      <div class="cards">
+        {card.title_h3 && <h3>{card.title_h3}</h3>}
+        {card.description && <p>{card.description}</p>}
+        <div class="card-cta">
+          {card.call_to_action.title && card.call_to_action.href && (
+            <a href={card.call_to_action.href} class="btn primary-btn">
+              {card.call_to_action.title}
+            </a>
+          )}
+        </div>
+      </div>
+    ))
+  }
+</div>

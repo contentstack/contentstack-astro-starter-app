@@ -1,7 +1,5 @@
-import * as contentstack from 'contentstack';
+import contentstack from 'contentstack';
 import * as Utils from '@contentstack/utils';
-
-import ContentstackLivePreview from '@contentstack/live-preview-utils';
 
 let customHost = import.meta.env.CONTENTSTACK_API_HOST
 customHost = customHost?.replace("api","cdn")
@@ -15,27 +13,11 @@ const Stack:contentstack.Stack = contentstack.Stack({
   environment: import.meta.env.CONTENTSTACK_ENVIRONMENT as string,
   //@ts-ignore
   region: import.meta.env.CONTENTSTACK_REGION || "us",
-  live_preview: {
-    enable: import.meta.env.CONTENTSTACK_LIVE_PREVIEW === "true" || true,
-    management_token: import.meta.env.CONTENTSTACK_MANAGEMENT_TOKEN as string,
-    host: import.meta.env.CONTENTSTACK_API_HOST as string,
-  },
 });
 
 if (customHost && customHost !== "cdn.contentstack.io") {
   Stack.setHost(customHost);
 }
-
-ContentstackLivePreview.init({
-  //@ts-ignore
-  stackSdk: Stack,
-  clientUrlParams: {
-    host: import.meta.env.CONTENTSTACK_APP_HOST,
-  },
-  ssr: false,
-});
-
-export const { onEntryChange } = ContentstackLivePreview;
 
 const renderOption = {
   span: (node:any, next:any) => next(node.children),

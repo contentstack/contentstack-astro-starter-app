@@ -1,0 +1,46 @@
+---
+import type { SectionWithBucket } from "../type/components";
+
+type Props = {
+  section: SectionWithBucket;
+};
+
+const { section } = Astro.props;
+---
+
+<div class="member-main-section">
+  <div class="member-head">
+    {section?.title_h2 && <h2>{section?.title_h2}</h2>}
+    {section?.description && <span set:html={section?.description}></span>}
+  </div>
+  <div class="member-section">
+    {
+      section?.buckets?.map((bucket) => (
+        <div class="content-section">
+          {bucket.icon && (
+            <img
+              src={bucket.icon.url}
+              alt="bucket icon"
+            />
+          )}
+
+          {bucket.title_h3 ? <h3>{bucket.title_h3}</h3> : ""}
+          {typeof bucket.description === "string" && (
+            <div set:html={bucket.description}/>
+          )}
+          {bucket.call_to_action.title ? (
+            <a
+              href={
+                bucket.call_to_action.href ? bucket.call_to_action.href : "#"
+              }
+            >
+              {`${bucket.call_to_action.title} -->`}
+            </a>
+          ) : (
+            ""
+          )}
+        </div>
+      ))
+    }
+  </div>
+</div>
