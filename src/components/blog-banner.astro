@@ -1,0 +1,29 @@
+---
+import type { Banner } from "../type/components";
+
+type Props = {
+  blogBanner: Banner;
+};
+const { blogBanner } = Astro.props;
+---
+
+<div
+  class="blog-page-banner"
+  style={{
+    background: `${blogBanner.bg_color ? blogBanner.bg_color : ""}`,
+  }}
+>
+  <div class="blog-page-content">
+    {
+      blogBanner.banner_title && (
+        <h1 class="hero-title">{blogBanner.banner_title}</h1>
+      )
+    }
+
+    {
+      blogBanner.banner_description && (
+        <p class="hero-description">{blogBanner.banner_description}</p>
+      )
+    }
+  </div>
+</div>

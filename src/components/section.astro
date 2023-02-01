@@ -1,0 +1,45 @@
+---
+import type { SectionProps } from "../type/components";
+
+type Props = {
+  section: SectionProps;
+};
+const { section } = Astro.props;
+
+---
+
+<div class="home-advisor-section">
+  {
+    section?.image_alignment == "Left" ? (
+      <>
+        <img src={section?.image.url} alt={section?.image.filename} />
+        <div class="home-content">
+          {section.title_h2 && <h2>{section?.title_h2}</h2>}
+          {section.description && <p>{section?.description}</p>}
+          {section.call_to_action.title && section.call_to_action.href ? (
+            <a href={section?.call_to_action.href} class="btn secondary-btn">
+              {section?.call_to_action.title}
+            </a>
+          ) : (
+            ""
+          )}
+        </div>
+      </>
+    ) : (
+      <>
+        <div class="home-content">
+          {section.title_h2 && <h2>{section?.title_h2}</h2>}
+          {section.description && <p>{section?.description}</p>}
+          {section.call_to_action.title && section.call_to_action.href ? (
+            <a href={section?.call_to_action.href} class="btn secondary-btn">
+              {section?.call_to_action.title}
+            </a>
+          ) : (
+            ""
+          )}
+        </div>
+        <img src={section?.image.url} alt={section?.image.filename} />
+      </>
+    )
+  }
+</div>

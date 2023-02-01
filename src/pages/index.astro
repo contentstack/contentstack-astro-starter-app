@@ -1,18 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getPageRes } from "../helper/utils";
+import { getPageRes } from "../scripts/utils";
 import type { Page } from "../type/page";
-import RenderComponents from "../components/render-components";
+import RenderComponents from "../components/render-components.astro";
+
 let pageEntry: Page | undefined = undefined;
 try {
   pageEntry = await getPageRes("/");
+
 } catch (error) {
   console.error(error);
-  Astro.redirect("404");
 }
 ---
 
-<Layout title="Home">
+<Layout title="Home" previewObject={{page:pageEntry}}>
   <main>
     {
       pageEntry && (

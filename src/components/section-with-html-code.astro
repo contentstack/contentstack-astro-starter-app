@@ -1,0 +1,41 @@
+---
+import type { SectionWithHtmlProps } from "../type/components";
+
+type Props = {
+  embedCode: SectionWithHtmlProps;
+};
+
+const { embedCode } = Astro.props;
+---
+
+{
+  embedCode?.html_code_alignment === "Left" ? (
+    <div class="contact-page-section max-width">
+      <div class="contact-page-content">
+        {embedCode?.title && <h1>{embedCode?.title}</h1>}
+        {typeof embedCode?.description === "string" && (
+          <div set:html={embedCode?.description}></div>
+        )}
+      </div>
+      <div class="contact-page-form">
+        {typeof embedCode?.html_code === "string" && (
+          <div set:html={embedCode?.html_code}></div>
+        )}
+      </div>
+    </div>
+  ) : (
+    <div class="contact-maps-section max-width">
+      <div class="maps-details">
+        {typeof embedCode?.html_code === "string" && (
+          <div set:html={embedCode?.html_code}></div>
+        )}
+      </div>
+      <div class="contact-maps-content">
+        {embedCode?.title ? <h2>{embedCode?.title}</h2> : ""}
+        {typeof embedCode?.description === "string" && (
+          <div set:html={embedCode?.description}></div>
+        )}
+      </div>
+    </div>
+  )
+}

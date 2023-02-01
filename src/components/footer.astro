@@ -1,0 +1,61 @@
+---
+import type { FooterProps } from "../type/layout";
+
+type Props = {
+  footer: FooterProps;
+}
+
+const{footer} = Astro.props
+---
+    <footer>
+      <div class="max-width footer-div">
+        <div class="col-quarter">
+          {footer && footer.logo && (
+            <a href="/" class="logo-tag">
+              <img
+                src={footer.logo.url}
+                alt={footer.title}
+                title={footer.title}
+                class="logo footer-logo"
+              />
+            </a>
+          )}
+        </div>
+        <div class="col-half">
+          <nav>
+            <ul class="nav-ul">
+              {footer &&
+                footer.navigation.link.map((menu) => (
+                  <li
+                    class="footer-nav-li"
+                  >
+                    <a href={menu.href}>{menu.title}</a>
+                  </li>
+                ))}
+            </ul>
+          </nav>
+        </div>
+        <div class="col-quarter social-link">
+          <div class="social-nav">
+            {footer &&
+              footer.social?.social_share.map((social) => (
+                <a
+                  href={social.link.href}
+                  title={social.link.title}
+                >
+                  {social.icon && (
+                    <img
+                      src={social.icon.url}
+                      alt={social.link.title}
+                    />
+                  )}
+                </a>
+              ))}
+          </div>
+        </div>
+      </div>
+      {footer && typeof footer.copyright === "string" && (
+        <div class="copyright" set:html={footer.copyright}>
+        </div>
+      )}
+    </footer>

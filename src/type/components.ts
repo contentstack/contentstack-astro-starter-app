@@ -47,6 +47,8 @@ export type FeaturedBlog = {
   body: string;
   date: Date;
   url: string;
+  uid:string;
+  is_archived:boolean;
   author: Author[];
   $?: {
     title: string;
@@ -134,42 +136,3 @@ export type RenderProps = {
   locale: string;
   pageComponents: Component[];
 }
-
-// export type HeaderProps ={
-//   title:string;
-//   logo:Image;
-//   uid:string;
-//   navigation_menu:{
-//     label:string
-//     page_reference:{
-//       uid:string
-//       _content_type_uid:string
-//     }[]
-//   }[];
-//   notification_bar:{
-//     show_announcement: boolean;
-//     announcement_text:JsonRTE;
-//   }
-// }
-
-// export type FooterProps ={
-// title:string;
-// uid:string;
-// logo:Image;
-// navigation:{
-//   link:{
-//     title:string;
-//     href:string;
-//   }[]
-// }
-// social:{
-//   social_share:{
-//     link:{
-//       title:string;
-//       href:string;
-//     }[]
-//   }[]
-// }
-// copyright: JsonRTE
-// }
-
