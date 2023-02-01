@@ -1,0 +1,56 @@
+---
+import Section from "./section.astro";
+import HeroBanner from "./hero-banner.astro";
+import BlogBanner from "./blog-banner.astro";
+import CardSection from "./card-section.astro";
+import TeamSection from "./team-section.astro";
+import BlogSection from "./blog-section.astro";
+import SectionBucket from "./section-bucket.astro";
+import AboutSectionBucket from "./about-section-bucket.astro";
+import SectionWithHtmlCode from "./section-with-html-code.astro";
+import type { RenderProps } from "../type/components";
+
+type Props = RenderProps;
+
+const { pageComponents, blogPost, entryUid, contentTypeUid, locale } =
+  Astro.props;
+---
+
+<div
+  data-pageref={entryUid}
+  data-contenttype={contentTypeUid}
+  data-locale={locale}
+>
+  {
+    pageComponents?.map((component) => (
+      <div>
+        {component.hero_banner?
+           blogPost ? (
+          <BlogBanner blogBanner={component.hero_banner} />
+        ) : (
+          <HeroBanner banner={component.hero_banner} />
+        ):""}
+        {component.section && <Section section={component.section} />}
+        {component.section_with_buckets &&
+        component.section_with_buckets.bucket_tabular ? (
+          <AboutSectionBucket
+            sectionWithBuckets={component.section_with_buckets}
+          />
+        ) : (
+          component.section_with_buckets && (
+            <SectionBucket section={component.section_with_buckets} />
+          )
+        )}
+        {component.from_blog && <BlogSection fromBlog={component.from_blog} />}
+        {component.section_with_cards && (
+          <CardSection cards={component.section_with_cards.cards} />
+        )}
+
+        {component.section_with_html_code && (
+          <SectionWithHtmlCode embedCode={component.section_with_html_code} />
+        )}
+        {component.our_team && <TeamSection ourTeam={component.our_team} />}
+      </div>
+    ))
+  }
+</div>

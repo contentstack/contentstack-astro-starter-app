@@ -1,0 +1,55 @@
+---
+import type { Banner } from "../type/components";
+
+type Props = {
+  banner: Banner;
+};
+
+const { banner } = Astro.props;
+---
+
+<div
+  class="hero-banner"
+  style={{
+    background: banner?.bg_color ? banner.bg_color : "",
+  }}
+>
+  <div
+    class="home-content"
+    style={{
+      color: banner?.text_color ? banner.text_color : "#000",
+    }}
+  >
+    {banner?.banner_title && <h1 class="hero-title">{banner.banner_title}</h1>}
+    {
+      banner?.banner_description ? (
+        <p
+          class="hero-description "
+          style={{
+            color: banner?.text_color ? banner.text_color : "#222",
+          }}
+        >
+          {banner?.banner_description}
+        </p>
+      ) : (
+        ""
+      )
+    }
+    {
+      banner?.call_to_action.title && banner.call_to_action.href ? (
+        <a href={banner?.call_to_action.href} class="btn tertiary-btn">
+          {banner?.call_to_action.title}
+        </a>
+      ) : (
+        ""
+      )
+    }
+  </div>
+  {
+    banner?.banner_image ? (
+      <img alt={banner?.banner_image.filename} src={banner?.banner_image.url} />
+    ) : (
+      ""
+    )
+  }
+</div>

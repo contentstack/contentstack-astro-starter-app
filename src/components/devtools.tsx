@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { JsonViewer } from '@textea/json-viewer'
 import Tooltip from './tool-tip';
 
 function filterObject(inputObject: any) {
@@ -12,6 +13,7 @@ function filterObject(inputObject: any) {
     'updated_at',
     'updated_by',
     'publish_details',
+    "$"
   ];
   for (const key in inputObject) {
     unWantedProps.includes(key) && delete inputObject[key];
@@ -70,7 +72,7 @@ const DevTools = ({ response }: any) => {
                 delay={200}
                 status={forceUpdate}
               >
-                <img src="/copy.svg" alt="copy icon" />
+                <img src="/images/copy.svg" alt="copy icon" />
               </Tooltip>
             </span>
             <button
@@ -83,16 +85,14 @@ const DevTools = ({ response }: any) => {
           <div className="modal-body">
             {response ? (
               <pre id="jsonViewer">
-                {/* {response && (
-                  <DynamicReactJson
-                    src={filteredJson}
-                    collapsed={1}
-                    name="response"
-                    displayDataTypes={false}
-                    enableClipboard={false}
+                {response && (
+                  <JsonViewer
+                    value={filteredJson}
+                    rootName="response"
+                    defaultInspectDepth={1}
                     style={{ color: '#C8501E' }}
                   />
-                )} */}
+                )}
               </pre>
             ) : (
               ''

@@ -17,7 +17,7 @@ type Announcement = {
 type PageRef = {
   title: string;
   url: string;
-  // $: AdditionalParam;
+  // $?: AdditionalParam;
 }
 
 type Share = {
@@ -27,23 +27,23 @@ type Share = {
 
 type Social = {
   social_share: [Share];
-  $:Social
+  $?:Social
 }
 
 type Navigation = {
   link: [Links];
 }
 
-type Author = {
+export type Author = {
   title: string;
-  // $: AdditionalParam;
+  $?: Author;
 }
 
 type Blog = {
   url: string;
   body: string;
   title: string;
-  $: Blog;
+  $?: Blog;
 }
 
 export type Posts = {
@@ -71,7 +71,7 @@ export type HeaderProps = {
   social: Social;
   navigation: Navigation;
   copyright: string;
-  $: HeaderProps
+  $?: HeaderProps
 }
 
 export type Entry = [
@@ -81,7 +81,7 @@ export type Entry = [
 type List = {
   label?: string;
   page_reference: [PageRef];
-  $: {};
+  $?: {};
   href?: string;
 }
 
@@ -93,7 +93,7 @@ export type Links = {
   label?: string;
   title: string;
   href: string;
-  $:Links;
+  $?:Links;
 }
 
 export type PageProps = {
@@ -115,7 +115,7 @@ export type FooterProps = {
   navigation_menu: [List];
   notification_bar: Announcement; 
   uid: string;
-  $: FooterProps;
+  $?: FooterProps;
 }
 
 export type ChilderenProps = {

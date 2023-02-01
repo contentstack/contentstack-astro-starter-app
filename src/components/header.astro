@@ -1,0 +1,77 @@
+---
+import Tooltip from "./tool-tip";
+import type { HeaderProps } from "../type/layout";
+type Props = {
+  header: HeaderProps;
+  currentPath: string;
+};
+const { header, currentPath } = Astro.props;
+---
+
+<header class="header">
+  <div class="note-div">
+    {
+      header?.notification_bar.show_announcement &&
+        typeof header.notification_bar.announcement_text === "string" && (
+          <div set:html={header.notification_bar.announcement_text}></div>
+        )
+    }
+  </div>
+  <div class="max-width header-div">
+    <div class="wrapper-logo">
+      {
+        header && (
+          <a href="/" class="logo-tag" title="Contentstack">
+            <img
+              class="logo"
+              src={header.logo.url}
+              alt={header.title}
+              title={header.title}
+            />
+          </a>
+        )
+      }
+    </div>
+    <input class="menu-btn" type="checkbox" id="menu-btn" />
+    <label class="menu-icon" html-for="menu-btn">
+      <span class="navicon"></span>
+    </label>
+    <nav class="menu">
+      <ul class="nav-ul header-ul">
+        {
+          header &&
+            header?.navigation_menu.map((list: any) => {
+              return (
+                <li
+                  class={
+                    `nav-li ${currentPath === list.page_reference[0].url
+                      ? " active"
+                      : ""}`
+                  }
+                >
+                  <a href={list.page_reference[0].url} class={""}>
+                    {list.label}
+                  </a>
+                </li>
+              );
+            })
+        }
+      </ul>
+    </nav>
+
+    <div class="json-preview">
+      <Tooltip
+        content="JSON Preview"
+        direction="top"
+        dynamic={false}
+        delay={200}
+        status={0}
+        client:only
+      >
+        <span data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          <img src="/images/json.svg" alt="JSON Preview icon" />
+        </span>
+      </Tooltip>
+    </div>
+  </div>
+</header>
