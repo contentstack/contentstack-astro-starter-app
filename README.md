@@ -1,4 +1,4 @@
-[![Contentstack](/contentstack.png)](https://www.contentstack.com/)
+[![Contentstack](/public/contentstack.png)](https://www.contentstack.com/)
 
 # Create a marketing website using Astro Framework
 
@@ -8,7 +8,7 @@ Astro uses Astro Island architecture to generate website with zero client-side J
 
 
 
-![contentstack-astro-starter-app](/starter-app.png)
+![contentstack-astro-starter-app](/public/starter-app.png)
 
 ## Live Demo
 
