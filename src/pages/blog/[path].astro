@@ -29,7 +29,7 @@ export async function getStaticPaths() {
 
   return entryList;
 }
-const { post } = Astro.props;
+const { post } = Astro.props as {post: FeaturedBlog};
 try {
   pageEntry = await getPageRes("/blog");
 } catch (error) {
@@ -73,7 +73,6 @@ try {
           {
             post && post.related_post && (
               <ArchiveRelative
-                {...post.$?.related_post}
                 blogs={post.related_post}
               />
             )

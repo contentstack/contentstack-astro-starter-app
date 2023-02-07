@@ -50,6 +50,7 @@ export type FeaturedBlog = {
   uid:string;
   is_archived:boolean;
   author: Author[];
+  related_post:FeaturedBlog[]
   $?: {
     title: string;
     featured_image: Image;
