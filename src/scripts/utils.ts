@@ -55,7 +55,7 @@ export const getBlogListRes = async () => {
   const response = await Stack.getEntry({
     contentTypeUid: 'blog_post',
     referenceFieldPath: ['author', 'related_post'],
-    jsonRtePath: ['body'],
+    jsonRtePath: ['body','related_post.body'],
   }) as [FeaturedBlog[]];
   return response[0];
 };

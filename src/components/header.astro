@@ -43,13 +43,12 @@ const { header, currentPath } = Astro.props;
             header?.navigation_menu.map((list: any) => {
               return (
                 <li
-                  class={
-                    `nav-li ${currentPath === list.page_reference[0].url
-                      ? " active"
+                  class="nav-li">
+                  <a href={list.page_reference[0].url} class={
+                    `${currentPath === list.page_reference[0].url
+                      ? "active"
                       : ""}`
-                  }
-                >
-                  <a href={list.page_reference[0].url} class={""}>
+                  }>
                     {list.label}
                   </a>
                 </li>

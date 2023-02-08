@@ -31,7 +31,7 @@ export async function getStaticPaths() {
 const {page} = Astro.props;
 ---
 
-<Layout title={page.title} previewObject={page}>
+<Layout title={page.title} previewObject={{page}}>
   <main>
     {
       page && (
