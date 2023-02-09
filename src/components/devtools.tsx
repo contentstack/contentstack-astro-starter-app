@@ -90,7 +90,6 @@ const DevTools = ({ response }: any) => {
                     value={filteredJson}
                     rootName="response"
                     defaultInspectDepth={1}
-                    style={{ color: '#C8501E' }}
                   />
                 )}
               </pre>
