@@ -1,11 +1,11 @@
 export type Action = {
     title: string;
     href: string;
-    $: Action;
+    $?: Action;
   }
 
 export type Image = {
     filename: string;
     url: string;
-    $: Image;
+    $?: Image;
   }

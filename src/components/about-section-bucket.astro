@@ -1,0 +1,65 @@
+---
+import type { SectionWithBucket } from "../type/components";
+
+type Props = {
+  sectionWithBuckets: SectionWithBucket;
+};
+
+const { sectionWithBuckets } = Astro.props;
+---
+
+<div class="member-main-section">
+  <div class="member-head">
+    {sectionWithBuckets?.title_h2 && <h2>{sectionWithBuckets?.title_h2}</h2>}
+  </div>
+  <div class="mission-section">
+    <div class="mission-content-top">
+      {
+        sectionWithBuckets?.buckets.map(
+          (bucket, index) =>
+            index < 2 && (
+              <div class="mission-content-section">
+                {bucket.icon && (
+                  <img
+                    class="mission-icon"
+                    src={bucket.icon.url}
+                    alt="art work"
+                  />
+                )}
+                <div class="mission-section-content">
+                  {bucket.title_h3 && <h3>{bucket.title_h3}</h3>}
+                  {typeof bucket.description === "string" && (
+                    <div set:html={bucket.description} />
+                  )}
+                </div>
+              </div>
+            )
+        )
+      }
+    </div>
+    <div class="mission-content-bottom">
+      {
+        sectionWithBuckets?.buckets.map(
+          (bucket, index) =>
+            index >= 2 && (
+              <div class="mission-content-section">
+                {bucket.icon && (
+                  <img
+                    class="mission-icon"
+                    src={bucket.icon.url}
+                    alt="art work"
+                  />
+                )}
+                <div class="mission-section-content">
+                  {bucket.title_h3 && <h3>{bucket.title_h3}</h3>}
+                  {typeof bucket.description === "string" && (
+                    <div set:html={bucket.description} />
+                  )}
+                </div>
+              </div>
+            )
+        )
+      }
+    </div>
+  </div>
+</div>

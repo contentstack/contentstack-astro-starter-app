@@ -1,8 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getAllEntries } from "../helper/utils";
+import { getAllEntries } from "../scripts/utils";
 import type { Page } from "../type/page";
-import RenderComponents from "../components/render-components";
+import RenderComponents from "../components/render-components.astro";
 
 export async function getStaticPaths() {
   let entryList:
@@ -13,7 +13,7 @@ export async function getStaticPaths() {
       if (entry.url !== "/" && entry.url !== "/blog") {
         entryList.push({
           params: {
-            page: entry.url.split("/")[1],
+            page: entry.url.replaceAll("/", ""),
           },
           props: {
             page: entry,
@@ -23,15 +23,15 @@ export async function getStaticPaths() {
     }
   } catch (error) {
     console.error(error);
-    Astro.redirect("404");
   }
+  
   return entryList;
 }
 
 const {page} = Astro.props;
 ---
 
-<Layout title={page.title}>
+<Layout title={page.title} previewObject={{page}}>
   <main>
     {
       page && (
