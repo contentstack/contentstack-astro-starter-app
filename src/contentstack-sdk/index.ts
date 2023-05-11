@@ -1,16 +1,16 @@
-import contentstack from 'contentstack';
-import * as Utils from '@contentstack/utils';
+import contentstack from "contentstack";
+import * as Utils from "@contentstack/utils";
 
-let customHost = import.meta.env.CONTENTSTACK_API_HOST
-customHost = customHost?.replace("api","cdn")
+let customHost = import.meta.env.CONTENTSTACK_API_HOST;
+customHost = customHost?.replace("api", "cdn");
 
-import.meta.env.CONTENTSTACK_REGION === "us" && customHost.replace("com","io")
+import.meta.env.CONTENTSTACK_REGION === "us" && customHost.replace("com", "io");
 
-
-const Stack:contentstack.Stack = contentstack.Stack({
+const Stack: contentstack.Stack = contentstack.Stack({
   api_key: import.meta.env.CONTENTSTACK_API_KEY as string,
   delivery_token: import.meta.env.CONTENTSTACK_DELIVERY_TOKEN as string,
   environment: import.meta.env.CONTENTSTACK_ENVIRONMENT as string,
+  branch: (import.meta.env.CONTENTSTACK_BRANCH as string) || "main",
   //@ts-ignore
   region: import.meta.env.CONTENTSTACK_REGION || "us",
 });
@@ -20,18 +20,18 @@ if (customHost && customHost !== "cdn.contentstack.io") {
 }
 
 const renderOption = {
-  span: (node:any, next:any) => next(node.children),
+  span: (node: any, next: any) => next(node.children),
 };
 
-type EntryProps ={
-  contentTypeUid:string;
-  referenceFieldPath?:string[];
-  jsonRtePath?:string[]
-}
+type EntryProps = {
+  contentTypeUid: string;
+  referenceFieldPath?: string[];
+  jsonRtePath?: string[];
+};
 
 type EntryUrlProps = EntryProps & {
-  entryUrl:string;
-}
+  entryUrl: string;
+};
 
 export default {
   /**
@@ -42,7 +42,7 @@ export default {
    * @param {* Json RTE path} jsonRtePath
    *
    */
-  getEntry({ contentTypeUid, referenceFieldPath, jsonRtePath }:EntryProps) {
+  getEntry({ contentTypeUid, referenceFieldPath, jsonRtePath }: EntryProps) {
     return new Promise((resolve, reject) => {
       const query = Stack.ContentType(contentTypeUid).Query();
       if (referenceFieldPath) query.includeReference(referenceFieldPath);
@@ -52,8 +52,8 @@ export default {
         .find()
         .then(
           (result) => {
-            jsonRtePath
-              && Utils.jsonToHTML({
+            jsonRtePath &&
+              Utils.jsonToHTML({
                 entry: result,
                 paths: jsonRtePath,
                 renderOption,
@@ -62,7 +62,7 @@ export default {
           },
           (error) => {
             reject(error);
-          },
+          }
         );
     });
   },
@@ -77,17 +77,20 @@ export default {
    * @returns
    */
   getEntryByUrl({
-    contentTypeUid, entryUrl, referenceFieldPath, jsonRtePath,
-  }:EntryUrlProps ) {
+    contentTypeUid,
+    entryUrl,
+    referenceFieldPath,
+    jsonRtePath,
+  }: EntryUrlProps) {
     return new Promise((resolve, reject) => {
       const blogQuery = Stack.ContentType(contentTypeUid).Query();
       if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath);
       blogQuery.includeOwner().toJSON();
-      const data = blogQuery.where('url', `${entryUrl}`).find();
+      const data = blogQuery.where("url", `${entryUrl}`).find();
       data.then(
         (result) => {
-          jsonRtePath
-            && Utils.jsonToHTML({
+          jsonRtePath &&
+            Utils.jsonToHTML({
               entry: result,
               paths: jsonRtePath,
               renderOption,
@@ -97,7 +100,7 @@ export default {
         (error) => {
           console.error(error);
           reject(error);
-        },
+        }
       );
     });
   },
