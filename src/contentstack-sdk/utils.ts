@@ -34,7 +34,7 @@ export const initializeContentStackSdk = (): contentstack.Stack => {
     api_key: CONTENTSTACK_API_KEY as string,
     delivery_token: CONTENTSTACK_DELIVERY_TOKEN as string,
     environment: CONTENTSTACK_ENVIRONMENT as string,
-    region: CONTENTSTACK_REGION || "us",
+    region: setRegion(),
     branch: CONTENTSTACK_BRANCH || "main",
   };
   return contentstack.Stack(stackConfig);
