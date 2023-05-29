@@ -1,21 +1,13 @@
-import contentstack from "contentstack";
 import * as Utils from "@contentstack/utils";
+import { customHostUrl, initializeContentStackSdk, isValidCustomHostUrl } from "./utils";
 
 let customHost = import.meta.env.CONTENTSTACK_API_HOST;
-customHost = customHost?.replace("api", "cdn");
+customHost = customHostUrl(customHost);
 
-import.meta.env.CONTENTSTACK_REGION === "us" && customHost.replace("com", "io");
+// initialize contentstack sdk
+const Stack = initializeContentStackSdk()
 
-const Stack: contentstack.Stack = contentstack.Stack({
-  api_key: import.meta.env.CONTENTSTACK_API_KEY as string,
-  delivery_token: import.meta.env.CONTENTSTACK_DELIVERY_TOKEN as string,
-  environment: import.meta.env.CONTENTSTACK_ENVIRONMENT as string,
-  branch: (import.meta.env.CONTENTSTACK_BRANCH as string) || "main",
-  //@ts-ignore
-  region: import.meta.env.CONTENTSTACK_REGION || "us",
-});
-
-if (customHost && customHost !== "cdn.contentstack.io") {
+if (isValidCustomHostUrl(customHost)) {
   Stack.setHost(customHost);
 }
 
@@ -47,7 +39,6 @@ export default {
       const query = Stack.ContentType(contentTypeUid).Query();
       if (referenceFieldPath) query.includeReference(referenceFieldPath);
       query
-        .includeOwner()
         .toJSON()
         .find()
         .then(
@@ -85,7 +76,7 @@ export default {
     return new Promise((resolve, reject) => {
       const blogQuery = Stack.ContentType(contentTypeUid).Query();
       if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath);
-      blogQuery.includeOwner().toJSON();
+      blogQuery.toJSON();
       const data = blogQuery.where("url", `${entryUrl}`).find();
       data.then(
         (result) => {
